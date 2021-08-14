@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Footer from "./components/Footer";
+import Recipe from "./components/Recipe";
 
 const foodDictionary = {
   Indian: [
@@ -17,64 +19,33 @@ const foodDictionary = {
     { recipe: "Chilli Chicken", rating: "5/5" },
   ],
 };
-var genres = Object.keys(foodDictionary);
+const genres = Object.keys(foodDictionary);
 
-function App() {
+const App = () => {
   const [selectedGenre, setGenre] = useState("Indian");
-  function genreClickHandler(genre) {
-    setGenre(genre);
-  }
+
   return (
-    <div className="container-center">
-      <nav>🍔 GoodFoods</nav>
-      <p>Checkout my favourite foods. Select a genre to get started.</p>
-      <div>
-        {genres.map((currentGenre) => {
+    <div className="container">
+      <nav className="navbar">🍔 GoodFoods</nav>
+      <nav className="tabs">
+        {genres.map((currentGenre, i) => {
           return (
             <button
-              onClick={() => genreClickHandler(currentGenre)}
-              style={{
-                backgroundColor: "var(--primary-color)",
-                padding: "0.5rem 1rem",
-                margin: "1rem 1rem",
-                fontSize: "1rem",
-                fontWeight: "bold",
-                outline: "none",
-                border: "none",
-                cursor: "pointer",
-                color: "white",
-              }}
-              key={currentGenre}
-            >
+              key={i}
+              onClick={() => setGenre(currentGenre)}
+              className="button">
               {currentGenre}
             </button>
           );
         })}
-      </div>
-      <hr />
-      <div>
-        <ul style={{ paddingInlineStart: "0px" }}>
-          {foodDictionary[selectedGenre].map((food) => {
-            return (
-              <li
-                key={food.recipe}
-                style={{
-                  listStyle: "none",
-                  padding: "1rem",
-                  border: "1px solid var(--primary-color)",
-                  maxWidth: "50%",
-                  margin: "1rem auto",
-                  borderRadius: "0.5rem",
-                }}
-              >
-                <div style={{ fontSize: "larger" }}> {food.recipe} </div>
-                <div style={{ fontSize: "smaller" }}> {food.rating} </div>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+      </nav>
+      <ul className="recipe-list-container">
+        {foodDictionary[selectedGenre].map((food, i) => {
+          return <Recipe key={i} recipe={food.recipe} rating={food.rating} />;
+        })}
+      </ul>
+      <Footer />
     </div>
   );
-}
+};
 export default App;
